@@ -1,0 +1,9 @@
+Poné acá el instalador que genera Inno Setup
+(installer\Output\XC24-Setup-<version>.exe del proyecto device_diagnostics),
+renombrado a XC24-Setup.exe — así el botón "DESCARGAR" de index.html
+(que apunta a "descargas/XC24-Setup.exe") lo encuentra sin que haya que
+tocar el HTML cada vez que sale una versión nueva.
+
+Si preferís mantener el número de versión en el nombre del archivo,
+actualizá el href del botón en index.html (buscá "btn-primary btn-large")
+para que coincida.

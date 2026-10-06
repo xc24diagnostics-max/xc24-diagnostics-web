@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">XC24 Diagnostics — Diagnóstico de dispositivos, 100% offline</title>
+<meta id="meta-description" name="description" content="XC24 Diagnostics: probá y diagnosticá tu mouse, mando, auriculares y rendimiento. Gratis, para Windows, sin conexión a internet.">
+<link rel="icon" href="assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="grid-backdrop" aria-hidden="true"></div>
+  <div class="scanline-overlay" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#top" class="brand">
+        <img src="assets/logo.png" alt="XC24" class="brand-logo">
+        <span class="brand-name"><span class="brand-light">XC24</span><span class="brand-bold">DIAGNOSTICS</span></span>
+      </a>
+      <div class="nav-group">
+        <nav class="main-nav">
+          <a href="#capturas" data-i18n="nav_capturas">Capturas</a>
+          <a href="#descarga" data-i18n="nav_descargar">Descargar</a>
+          <a href="#novedades" data-i18n="nav_novedades">Novedades</a>
+          <a href="#donaciones" data-i18n="nav_donaciones">Donaciones</a>
+          <a href="#faq" data-i18n="nav_faq">Preguntas</a>
+          <a href="#agradecimientos" data-i18n="nav_agradecimientos">Agradecimientos</a>
+        </nav>
+        <div class="lang-switch" role="group" aria-label="Idioma / Language">
+          <button type="button" class="lang-btn" data-lang="es">ES</button>
+          <button type="button" class="lang-btn" data-lang="en">EN</button>
+          <button type="button" class="lang-btn" data-lang="ru">RU</button>
+          <button type="button" class="lang-btn" data-lang="ja">JA</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="top" class="hero">
+      <img src="assets/hero-bg.webp" alt="" class="hero-bg-img">
+      <div class="hero-bg-overlay" aria-hidden="true"></div>
+      <div class="hazard-corner hazard-tl" aria-hidden="true"></div>
+      <div class="hazard-corner hazard-br" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-content">
+          <p class="hero-eyebrow"><span class="slash">/</span> <span data-i18n="hero_tagline">Diagnóstico de dispositivos — 100% offline</span></p>
+          <h1 class="hero-title"><span class="brand-light">XC24</span><span class="brand-bold">DIAGNOSTICS</span></h1>
+          <p class="hero-desc" data-i18n="hero_desc">
+            Probá tu mouse, tu mando y tus auriculares, medí el rendimiento de tu
+            sistema y detectá fallas antes de que te arruinen una partida.
+            Sin cuentas, sin conexión a internet, sin nada corriendo en segundo
+            plano que no sepas que está ahí.
+          </p>
+          <a href="#descarga" class="btn btn-primary" data-i18n="btn_descargar_gratis">DESCARGAR GRATIS</a>
+          <p class="hero-meta">
+            <span class="mono-tag">WINDOWS 10 / 11</span>
+            <span class="mono-tag">x64</span>
+            <span class="mono-tag" data-i18n="badge_sin_registro">SIN REGISTRO</span>
+          </p>
+          <p class="hero-status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span data-i18n="hero_status">ESTADO DEL SISTEMA: LISTO</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="capturas" class="panel panel-alt">
+      <div class="panel-inner panel-inner-capturas">
+        <h2 class="panel-title"><span class="slash">/</span> <span data-i18n="section_capturas_title">CAPTURAS</span> <span class="slash">\</span></h2>
+        <p class="panel-text" data-i18n="capturas_text">Así se ve XC24 Diagnostics por dentro.</p>
+        <div class="screenshot-carousel">
+          <button type="button" class="carousel-btn carousel-prev" data-i18n-aria="carousel_prev" aria-label="Captura anterior" disabled>&#8249;</button>
+          <div class="screenshot-viewport">
+            <div class="screenshot-track">
+              <div class="screenshot-page">
+                <figure class="screenshot-card">
+                  <img src="assets/screenshots/inicio.webp" data-i18n-alt="screenshot_inicio_alt" alt="Pantalla de Inicio de XC24 Diagnostics" loading="lazy">
+                  <figcaption data-i18n="screenshot_inicio">Inicio</figcaption>
+                </figure>
+                <figure class="screenshot-card">
+                  <img src="assets/screenshots/mouse.webp" data-i18n-alt="screenshot_mouse_alt" alt="Diagnóstico de Mouse en XC24 Diagnostics" loading="lazy">
+                  <figcaption data-i18n="screenshot_mouse">Mouse</figcaption>
+                </figure>
+              </div>
+              <div class="screenshot-page">
+                <figure class="screenshot-card">
+                  <img src="assets/screenshots/gamepad.webp" data-i18n-alt="screenshot_gamepad_alt" alt="Diagnóstico de Gamepad en XC24 Diagnostics" loading="lazy">
+                  <figcaption data-i18n="screenshot_gamepad">Gamepad</figcaption>
+                </figure>
+                <figure class="screenshot-card">
+                  <img src="assets/screenshots/auriculares.webp" data-i18n-alt="screenshot_auriculares_alt" alt="Diagnóstico de Auriculares en XC24 Diagnostics" loading="lazy">
+                  <figcaption data-i18n="screenshot_auriculares">Auriculares</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="carousel-btn carousel-next" data-i18n-aria="carousel_next" aria-label="Siguiente captura">&#8250;</button>
+        </div>
+        <div class="carousel-dots" role="tablist">
+          <button type="button" class="dot active" data-page="0" data-i18n-aria="carousel_page_1" aria-label="Página 1"></button>
+          <button type="button" class="dot" data-page="1" data-i18n-aria="carousel_page_2" aria-label="Página 2"></button>
+        </div>
+      </div>
+    </section>
+
+    <div class="lightbox" id="screenshot-lightbox" hidden>
+      <button type="button" class="lightbox-close" data-i18n-aria="lightbox_close" aria-label="Cerrar">&times;</button>
+      <button type="button" class="lightbox-nav lightbox-prev" data-i18n-aria="carousel_prev" aria-label="Captura anterior">&#8249;</button>
+      <img src="" alt="" id="lightbox-img">
+      <button type="button" class="lightbox-nav lightbox-next" data-i18n-aria="carousel_next" aria-label="Siguiente captura">&#8250;</button>
+    </div>
+
+    <section id="descarga" class="panel panel-photo">
+      <img src="assets/download-bg.webp" alt="" class="panel-bg-img">
+      <div class="panel-bg-overlay" aria-hidden="true"></div>
+      <div class="panel-inner">
+        <h2 class="panel-title"><span class="slash">/</span> <span data-i18n="section_descargar_title">DESCARGAR</span> <span class="slash">\</span></h2>
+        <p class="panel-text" data-i18n-html="descarga_text_html">
+          Última versión disponible para Windows. El instalador es un
+          <code>.exe</code> normal: elegís carpeta, accesos directos, y queda
+          instalado con su propio desinstalador.
+        </p>
+        <a href="descargas/XC24-Setup.exe" class="btn btn-primary btn-large" data-i18n="btn_descargar_full">
+          DESCARGAR XC24 DIAGNOSTICS
+        </a>
+        <p class="panel-note" data-i18n-html="descarga_note_html">
+          <strong>Nota:</strong> como el instalador no está firmado
+          digitalmente, es normal que Windows SmartScreen muestre una
+          advertencia la primera vez ("Windows protegió tu PC"). Hacé clic en
+          <em>"Más información"</em> → <em>"Ejecutar de todas formas"</em>.
+        </p>
+      </div>
+    </section>
+
+    <section id="novedades" class="panel">
+      <div class="panel-inner panel-inner-wide">
+        <h2 class="panel-title"><span class="slash">/</span> <span data-i18n="section_novedades_title">NOVEDADES</span> <span class="slash">\</span></h2>
+        <p class="panel-text" data-i18n="novedades_text">
+          Todo lo que trae esta primera versión de XC24 Diagnostics.
+        </p>
+
+        <div class="changelog">
+          <div class="changelog-entry">
+            <p class="changelog-date" data-i18n="novedades_version_label">VERSIÓN 1.0.0</p>
+            <ul class="changelog-list">
+              <li data-i18n="novedades_v1_1">Diagnóstico completo de Mouse, Gamepad y Auriculares, con pruebas dedicadas para cada dispositivo.</li>
+              <li data-i18n="novedades_v1_2">Pantalla de Inicio tipo HUD, con selector circular y navegación por teclado, mouse o mando.</li>
+              <li data-i18n="novedades_v1_3">Compatible con DualShock 4, DualSense, DualShock 3, Xbox y Xbox Series X.</li>
+              <li data-i18n="novedades_v1_4">Informes de diagnóstico en PDF para Mouse y Gamepad, con tus propias notas incluidas.</li>
+              <li data-i18n="novedades_v1_5">Overlay de rendimiento en juego: FPS, uso de CPU y RAM en pantalla, fijalo donde quieras.</li>
+              <li data-i18n="novedades_v1_6">Pruebas de Vibración y Sticks del mando con gráficos en vivo y confirmación manual.</li>
+              <li data-i18n="novedades_v1_7">Disponible en español, inglés, ruso y japonés — la app y los informes.</li>
+              <li data-i18n="novedades_v1_8">100% offline: sin cuentas, sin conexión a internet, sin nada corriendo en segundo plano que no sepas que está ahí.</li>
+              <li data-i18n="novedades_v1_9">Compilación ofuscada, para mayor seguridad del programa.</li>
+            </ul>
+            <p class="panel-note" data-i18n="novedades_note">Puede que haya algún bug chico dando vueltas — se va a resolver en la próxima versión (1.0.1), junto con nuevos cambios y contenido.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="donaciones" class="panel panel-alt">
+      <img src="assets/donaciones-chica.webp" alt="" class="donate-character">
+      <div class="panel-inner">
+        <h2 class="panel-title"><span class="slash">/</span> <span data-i18n="section_donaciones_title">DONACIONES</span> <span class="slash">\</span></h2>
+        <p class="panel-text" data-i18n="donaciones_text">
+          Espero que les gusten el programa y que les sirvan, si desean
+          bancar el proyecto para que siga creciendo, les agradecería mucho
+          que puedan colaborar con algo, muchas gracias.
+        </p>
+
+        <p class="donate-group-label" data-i18n="donate_group_ar">Desde Argentina</p>
+        <div class="donate-row">
+          <a href="https://cafecito.app/xc24-diagnostic" target="_blank" rel="noopener" class="btn btn-green">Cafecito</a>
+        </div>
+
+        <p class="donate-group-label" data-i18n="donate_group_intl">Desde cualquier país</p>
+        <div class="donate-row">
+          <a href="https://ko-fi.com/xc24diagnostics" target="_blank" rel="noopener" class="btn btn-green">Ko-fi</a>
+          <a href="https://paypal.me/srlokito" target="_blank" rel="noopener" class="btn btn-green">PayPal <small>@srlokito</small></a>
+          <span class="btn btn-ghost btn-disabled">GitHub Sponsors <small data-i18n="donate_soon">(próximamente)</small></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="panel">
+      <div class="panel-inner panel-inner-wide">
+        <h2 class="panel-title"><span class="slash">/</span> <span data-i18n="section_faq_title">PREGUNTAS FRECUENTES</span> <span class="slash">\</span></h2>
+        <ul class="faq-list">
+          <li>
+            <p class="faq-question" data-i18n="faq_q1">¿Es gratis?</p>
+            <p class="faq-answer" data-i18n="faq_a1">Sí, XC24 Diagnostics es gratis. Si te sirvió, podés apoyar el proyecto con una donación (ver la sección de arriba).</p>
+          </li>
+          <li>
+            <p class="faq-question" data-i18n="faq_q2">¿Necesito internet para usarlo?</p>
+            <p class="faq-answer" data-i18n="faq_a2">No. Corre 100% offline — ni siquiera hace falta conexión para instalarlo o actualizarlo. Todo el diagnóstico se hace en tu propia máquina.</p>
+          </li>
+          <li>
+            <p class="faq-question" data-i18n="faq_q3">¿Por qué Windows me muestra una advertencia al instalarlo?</p>
+            <p class="faq-answer" data-i18n="faq_a3">Porque el instalador no tiene firma digital (eso requiere un certificado pago). Es normal — hacé clic en "Más información" → "Ejecutar de todas formas".</p>
+          </li>
+          <li>
+            <p class="faq-question" data-i18n="faq_q4">¿Qué mandos soporta?</p>
+            <p class="faq-answer" data-i18n="faq_a4">DualShock 4, DualSense (PS5), DualShock 3 y mandos Xbox, incluido Xbox Series X.</p>
+          </li>
+          <li>
+            <p class="faq-question" data-i18n="faq_q5">¿Necesito crear una cuenta?</p>
+            <p class="faq-answer" data-i18n="faq_a5">No, nunca. No hay registro, ni login, ni nada que identifique quién sos.</p>
+          </li>
+          <li>
+            <p class="faq-question" data-i18n="faq_q6">¿Recopila algún dato mío?</p>
+            <p class="faq-answer" data-i18n="faq_a6">No. No hay telemetría ni conexión a servidores — todo lo que mide se queda en tu PC.</p>
+          </li>
+          <li>
+            <p class="faq-question" data-i18n="faq_q7">¿En qué versión de Windows funciona?</p>
+            <p class="faq-answer" data-i18n="faq_a7">Windows 10 y 11, de 64 bits (x64).</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="agradecimientos" class="panel">
+      <div class="panel-inner">
+        <h2 class="panel-title"><span class="slash">/</span> <span data-i18n="section_agradecimientos_title">AGRADECIMIENTOS</span> <span class="slash">\</span></h2>
+        <p class="panel-text" data-i18n="agradecimientos_text">
+          XC24 Diagnostics usa recursos de terceros bajo licencia abierta.
+          Gracias a:
+        </p>
+        <ul class="credits-list">
+          <li>
+            <span class="credit-name" data-i18n="credit_music_name">Anime Cyberpunk — YevhenAstafiev</span>
+            <span class="credit-license" data-i18n-html="credit_music_license_html">Pixabay · <a href="https://pixabay.com/music/synthwave-anime-anime-cyberpunk-534203/" target="_blank" rel="noopener noreferrer">Pixabay Content License</a></span>
+          </li>
+          <li>
+            <span class="credit-name" data-i18n="credit_fonts_name">Tipografías Rajdhani y JetBrains Mono</span>
+            <span class="credit-license" data-i18n="credit_fonts_license">Google Fonts · SIL Open Font License</span>
+          </li>
+        </ul>
+        <p class="panel-note" data-i18n-html="agradecimientos_note_html">
+          ¿Faltó acreditar algo? <a href="#">Avisanos</a>.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p data-i18n="footer_text">© 2026 XC24 — Derechos reservados</p>
+  </footer>
+
+  <script src="js/i18n.js" defer></script>
+  <script src="js/gallery.js" defer></script>
+
+</body>
+</html>

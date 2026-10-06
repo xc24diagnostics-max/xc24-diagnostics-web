@@ -1,0 +1,896 @@
+/* XC24 Diagnostics — página web
+   Mismo lenguaje visual que la app: negro + rojo, esquinas cortadas
+   ("chamfer"), Rajdhani para títulos, JetBrains Mono para etiquetas
+   chicas, nada de bordes redondeados ni sombras suaves tipo Material. */
+
+:root {
+  --bg: #08090b;
+  --bg-alt: #0d0f12;
+  --panel: #111318;
+  --panel-alt: #16191e;
+  --gray-dark: #20242a;
+  --gray-mid: #555a61;
+  --gray-light: #a7adb5;
+  --white: #ffffff;
+  --red: #e53935;
+  --red-bright: #ff3b30;
+  --green: #3ddc71;
+  --cut: 18px; /* mismo criterio que `_cutFraction`/`_cut` de los widgets HUD */
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--gray-light);
+  font-family: 'Rajdhani', sans-serif;
+  line-height: 1.5;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- fondo de grilla sutil, igual criterio que HudBackground ---------- */
+.grid-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* textura CRT sutil tipo monitor táctico — va por encima del contenido
+   pero por debajo del header (que ya tiene fondo sólido) y del lightbox. */
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.025) 0px,
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+header, main, footer { position: relative; z-index: 1; }
+
+/* ---------- utilidades compartidas ---------- */
+.mono-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--gray-light);
+  border: 1px solid var(--gray-dark);
+  padding: 4px 10px;
+}
+
+.slash {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.brand-light { font-weight: 500; color: var(--gray-light); }
+.brand-bold { font-weight: 700; color: var(--white); margin-left: 6px; }
+
+/* esquina cortada, mismo truco que `_moduleCardPath`/`_hudDialogFramePath`
+   de la app: clip-path con un corte diagonal arriba-izquierda y
+   abajo-derecha. */
+.cut-corners {
+  clip-path: polygon(
+    var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
+  );
+}
+
+/* ---------- header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--gray-dark);
+}
+
+.header-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo { width: 32px; height: 32px; }
+
+.brand-name {
+  font-size: 17px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.main-nav { display: flex; gap: 22px; }
+
+.main-nav a {
+  font-size: 13px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.main-nav a:hover { color: var(--white); }
+
+/* ---------- selector de idioma ---------- */
+.lang-switch {
+  display: flex;
+  gap: 4px;
+}
+
+.lang-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  background: transparent;
+  border: 1px solid var(--gray-dark);
+  color: var(--gray-mid);
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.lang-btn:hover { color: var(--gray-light); border-color: var(--gray-mid); }
+
+.lang-btn.active {
+  color: var(--white);
+  border-color: var(--red);
+}
+
+/* ---------- hero ---------- */
+/* el section ocupa todo el ancho de la ventana (no se limita a los
+   1340px del resto del sitio) para que la ilustración pueda sangrar
+   hasta el borde real de la pantalla en monitores anchos — si no,
+   queda pegada al borde del contenedor centrado y se nota un espacio
+   vacío grande antes del borde físico. El texto adentro sigue
+   alineado como si estuviera en el contenedor de 1340px de siempre. */
+.hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  min-height: clamp(560px, 66vh, 780px);
+}
+
+.hero-inner {
+  max-width: 1340px;
+  margin: 0 auto;
+  min-height: inherit;
+  display: flex;
+  align-items: center;
+  padding: 70px 24px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 540px;
+  padding-left: 22px;
+  text-align: left;
+}
+
+/* barra vertical fina a la izquierda del bloque de texto — un acento
+   HUD chico y estructural (lectura de "margen de panel táctico") en
+   vez de una forma grande detrás de todo el contenido. */
+.hero-content::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: 3px;
+  background: var(--red);
+  opacity: 0.7;
+}
+
+/* foto de fondo del hero, a toda la sección — el título, el texto y el
+   botón van encima. El degradé oscuro de .hero-bg-overlay es lo que
+   hace que el texto se siga leyendo sobre una imagen con mucho detalle:
+   más oscuro del lado del texto (izquierda), se aclara hacia la derecha
+   para que la escena se vea. */
+.hero-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  z-index: -2;
+}
+
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to right, rgba(8, 9, 11, 0.95) 0%, rgba(8, 9, 11, 0.85) 32%, rgba(8, 9, 11, 0.45) 62%, rgba(8, 9, 11, 0.12) 100%),
+    linear-gradient(to top, rgba(8, 9, 11, 0.55) 0%, transparent 42%);
+}
+
+.hero-title {
+  /* fluido: nunca se desborda en pantallas chicas (el mínimo 32px es el
+     tamaño que ya probamos a 390px de ancho) y llega a 60px en desktop. */
+  font-size: clamp(32px, 8vw, 60px);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+}
+
+/* eyebrow arriba del título — mismo lenguaje que los "/ TÍTULO \" del
+   resto de las secciones (.panel-title .slash), para que el hero hable
+   el mismo idioma visual que el resto de la página en vez de uno nuevo. */
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--gray-light);
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+.hero-eyebrow .slash { margin-right: 4px; }
+
+.hero-desc {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--gray-light);
+  max-width: 560px;
+  margin: 0 0 36px;
+}
+
+.hero-meta {
+  margin-top: 22px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-status {
+  margin: 18px 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 7px rgba(61, 220, 113, 0.75);
+  animation: status-blink 2.2s ease-in-out infinite;
+}
+
+@keyframes status-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot { animation: none; }
+}
+
+/* esquinas con "hazard stripe" chico, mismo lenguaje que
+   `_HazardStripesPainter` de la intro. */
+.hazard-corner {
+  position: absolute;
+  width: 72px;
+  height: 18px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--red) 0 6px,
+    transparent 6px 12px
+  );
+  opacity: 0.55;
+}
+.hazard-tl { top: 32px; left: 0; }
+.hazard-br { bottom: 32px; right: 0; }
+
+/* ---------- botones ---------- */
+.btn {
+  display: inline-block;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 14px 30px;
+  border: 1.5px solid var(--red);
+  cursor: pointer;
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+
+.btn:hover { transform: translateY(-1px); }
+
+.btn-primary {
+  background: rgba(229, 57, 53, 0.16);
+  color: var(--white);
+}
+.btn-primary:hover { background: rgba(229, 57, 53, 0.28); }
+
+.btn-large { font-size: 17px; padding: 18px 40px; }
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--gray-dark);
+  color: var(--gray-light);
+}
+
+.btn-green {
+  background: transparent;
+  border-color: var(--green);
+  color: var(--green);
+}
+.btn-green:hover { background: rgba(61, 220, 113, 0.14); }
+.btn-green small {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  color: var(--green);
+  opacity: 0.75;
+  margin-top: 2px;
+}
+
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-disabled small {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  color: var(--gray-mid);
+  margin-top: 2px;
+}
+
+/* ---------- secciones / paneles ---------- */
+.panel {
+  border-top: 1px solid var(--gray-dark);
+  padding: 70px 24px;
+}
+
+.panel-alt { background: var(--bg-alt); }
+
+.panel-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.panel-inner-wide { max-width: 720px; }
+.panel-inner-capturas { max-width: 1120px; }
+
+/* paneles con foto de fondo (p. ej. Descargar) — mismo criterio que el
+   hero: imagen a toda la sección + degradé oscuro para que el texto
+   centrado se siga leyendo bien encima de una imagen con detalle. */
+.panel-photo {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.panel-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -2;
+}
+
+.panel-bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to bottom, rgba(8, 9, 11, 0.78) 0%, rgba(8, 9, 11, 0.9) 100%),
+    rgba(8, 9, 11, 0.55);
+}
+
+.panel-photo .panel-title { color: var(--green); }
+.panel-photo .panel-text { color: var(--green); }
+
+#donaciones .panel-title { color: var(--green); }
+#donaciones .panel-text { color: var(--green); }
+
+/* ---------- capturas: carrusel ---------- */
+.screenshot-carousel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.screenshot-viewport {
+  flex: 1;
+  overflow: hidden;
+}
+
+.screenshot-track {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.screenshot-page {
+  flex: 0 0 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.carousel-btn {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  background: var(--panel-alt);
+  border: 1.5px solid var(--gray-mid);
+  color: var(--white);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.carousel-btn:hover:not(:disabled) {
+  border-color: var(--red);
+  background: rgba(229, 57, 53, 0.14);
+}
+
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.carousel-dots .dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  background: var(--gray-dark);
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  transition: background 0.15s ease;
+}
+
+.carousel-dots .dot.active {
+  background: var(--red);
+}
+
+.screenshot-card {
+  position: relative;
+  margin: 0;
+  background: var(--panel);
+  border: 1px solid var(--gray-dark);
+  overflow: hidden;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  transition: border-color 0.15s ease;
+}
+
+/* brackets tipo mira/HUD en las esquinas que no tienen el corte chamfer,
+   para que las capturas lean como un "target lock" táctico. */
+.screenshot-card::before,
+.screenshot-card::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--red);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.screenshot-card::before {
+  top: 8px;
+  right: 8px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.screenshot-card::after {
+  bottom: 8px;
+  left: 8px;
+  border-right: none;
+  border-top: none;
+}
+
+.screenshot-card:hover {
+  border-color: var(--red);
+}
+
+.screenshot-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+}
+
+.screenshot-card figcaption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  padding: 10px 14px;
+  border-top: 1px solid var(--gray-dark);
+}
+
+/* ---------- lightbox ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(8, 9, 11, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  cursor: zoom-out;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid var(--gray-dark);
+  cursor: default;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 38px;
+  height: 38px;
+  background: var(--panel);
+  border: 1px solid var(--gray-dark);
+  color: var(--white);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  transition: border-color 0.15s ease;
+}
+
+.lightbox-close:hover {
+  border-color: var(--red);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  background: var(--panel-alt);
+  border: 1.5px solid var(--gray-mid);
+  color: var(--white);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.lightbox-nav:hover {
+  border-color: var(--red);
+  background: rgba(229, 57, 53, 0.14);
+}
+
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+
+/* ---------- novedades / changelog ---------- */
+.changelog {
+  text-align: left;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.changelog-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--red-bright);
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gray-dark);
+}
+
+.changelog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.changelog-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--gray-light);
+}
+
+.changelog-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.panel-title {
+  font-size: 24px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0 0 18px;
+}
+
+.panel-text {
+  font-size: 15px;
+  margin: 0 0 30px;
+}
+
+.panel-text code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--panel);
+  padding: 2px 6px;
+  font-size: 13px;
+}
+
+.panel-note {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--gray-mid);
+  text-align: left;
+  background: var(--panel);
+  border-left: 2px solid var(--red);
+  padding: 14px 18px;
+}
+
+.panel-note a { color: var(--red-bright); }
+
+.donate-group-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+  margin: 0 0 12px;
+}
+
+.donate-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.donate-row:last-of-type { margin-bottom: 0; }
+
+/* mascota a la izquierda de Donaciones — decorativa, se esconde en
+   anchos donde pisaría el bloque de texto centrado. */
+#donaciones { position: relative; overflow: hidden; }
+
+#donaciones .panel-inner { position: relative; z-index: 1; }
+
+.donate-character {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(36vw, 460px);
+  aspect-ratio: 1247 / 1260;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 1150px) {
+  .donate-character { display: none; }
+}
+
+/* ---------- preguntas frecuentes ---------- */
+.faq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.faq-list li {
+  border-top: 1px solid var(--gray-dark);
+  padding-top: 22px;
+}
+
+.faq-list li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.faq-question {
+  position: relative;
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 8px;
+}
+
+/* mismo rombo HUD que usan los bullets de Novedades, en vez de una
+   letra "Q" — más consistente con el resto del lenguaje visual. */
+.faq-question::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.faq-answer {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--gray-light);
+  margin: 0;
+}
+
+/* ---------- agradecimientos ---------- */
+.credits-list {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.credits-list li {
+  background: var(--panel);
+  border-left: 2px solid var(--gray-dark);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.credit-name {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.credit-license {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--gray-mid);
+}
+
+.credit-license a { color: var(--red-bright); }
+
+/* ---------- footer ---------- */
+.site-footer {
+  text-align: center;
+  padding: 30px 24px 50px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--gray-mid);
+  letter-spacing: 0.5px;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1200px) {
+  .nav-group { gap: 14px; }
+  .main-nav { gap: 14px; }
+  .main-nav a { font-size: 12px; letter-spacing: 0.8px; }
+}
+
+@media (max-width: 1060px) {
+  .main-nav { display: none; }
+}
+
+/* hero: de dos columnas (texto + ilustración) a apiladas. El texto y
+   el botón de descarga van primero siempre, para que no haya que
+   scrollear de más para llegar al CTA. */
+@media (max-width: 900px) {
+  .hero { min-height: 0; display: flex; flex-direction: column; }
+  .hero-inner { padding: 70px 24px 10px; justify-content: center; }
+  .hero-content { text-align: center; max-width: 560px; padding-left: 0; }
+  .hero-content::before { display: none; }
+  .hero-desc { margin: 0 auto 36px; }
+  .hero-meta { justify-content: center; }
+  /* en mobile el texto queda centrado sobre toda la foto (no a la
+     izquierda), así que el degradé lateral no sirve: hace falta un
+     oscurecimiento más uniforme en toda la sección para que se siga
+     leyendo bien. */
+  .hero-bg-overlay {
+    background:
+      linear-gradient(to bottom, rgba(8, 9, 11, 0.55) 0%, rgba(8, 9, 11, 0.75) 100%),
+      rgba(8, 9, 11, 0.45);
+  }
+}
+
+@media (max-width: 640px) {
+  .main-nav { display: none; }
+  .header-inner { padding: 12px 16px; }
+  .brand-name { font-size: 14px; }
+  .lang-switch { gap: 3px; }
+  .lang-btn { padding: 3px 6px; font-size: 10px; }
+  .hero-inner { padding: 70px 20px 10px; }
+  .donate-row { flex-direction: column; align-items: stretch; }
+  .screenshot-page { grid-template-columns: 1fr; gap: 14px; }
+  .screenshot-carousel { gap: 8px; }
+  .carousel-btn { width: 40px; height: 40px; font-size: 20px; }
+  .lightbox { padding: 20px; }
+  .lightbox-close { top: 10px; right: 10px; }
+  .lightbox-nav { width: 38px; height: 38px; font-size: 20px; }
+  .lightbox-prev { left: 6px; }
+  .lightbox-next { right: 6px; }
+}
