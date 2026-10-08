@@ -77,6 +77,8 @@ const I18N = {
     faq_a6: `No. No hay telemetría ni conexión a servidores — todo lo que mide se queda en tu PC.`,
     faq_q7: `¿En qué versión de Windows funciona?`,
     faq_a7: `Windows 10 y 11, de 64 bits (x64).`,
+    faq_q8: `¿Puedo usar el overlay de Rendimiento (FPS) mientras juego online?`,
+    faq_a8: `Con cuidado. El overlay de Rendimiento corre con permisos de administrador y dibuja una ventana superpuesta sobre el juego. Algunos sistemas anti-trampas estrictos (sobre todo los que trabajan a nivel de kernel, como Vanguard de Valorant, o EasyAntiCheat/BattlEye en modo estricto) pueden detectarlo y marcarlo como sospechoso, con riesgo de suspensión de cuenta. No lo recomendamos en juegos competitivos online con anti-cheat activo — en juegos sin anti-cheat o para un jugador no hay ningún problema.`,
     footer_text: `© 2026 XC24 — Derechos reservados`,
   },
   en: {
@@ -152,6 +154,8 @@ const I18N = {
     faq_a6: `No. There's no telemetry and no connection to any server — everything it measures stays on your PC.`,
     faq_q7: `What Windows versions does it support?`,
     faq_a7: `Windows 10 and 11, 64-bit (x64).`,
+    faq_q8: `Can I use the Performance (FPS) overlay while playing online?`,
+    faq_a8: `With caution. The Performance overlay runs with administrator permissions and draws a window on top of the game. Some strict anti-cheat systems (especially kernel-level ones, like Valorant's Vanguard, or EasyAntiCheat/BattlEye in strict mode) may detect it and flag it as suspicious, risking an account suspension. We don't recommend using it in competitive online games with active anti-cheat — it's completely fine in games without anti-cheat or in single-player.`,
     footer_text: `© 2026 XC24 — All rights reserved`,
   },
   ru: {
@@ -227,6 +231,8 @@ const I18N = {
     faq_a6: `Нет. Никакой телеметрии и подключения к серверам — всё, что измеряется, остаётся на твоём компьютере.`,
     faq_q7: `На каких версиях Windows работает?`,
     faq_a7: `Windows 10 и 11, 64-бит (x64).`,
+    faq_q8: `Можно ли использовать оверлей производительности (FPS) во время онлайн-игры?`,
+    faq_a8: `С осторожностью. Оверлей производительности запускается с правами администратора и рисует окно поверх игры. Некоторые строгие античит-системы (особенно работающие на уровне ядра, например Vanguard от Valorant, или EasyAntiCheat/BattlEye в строгом режиме) могут обнаружить его и пометить как подозрительный, что рискует привести к блокировке аккаунта. Мы не рекомендуем использовать его в соревновательных онлайн-играх с активным античитом — в играх без античита или в одиночной игре проблем нет.`,
     footer_text: `© 2026 XC24 — Все права защищены`,
   },
   ja: {
@@ -302,6 +308,8 @@ const I18N = {
     faq_a6: `いいえ。テレメトリーもサーバーへの接続もありません — 測定したものはすべてお使いのPC内に留まります。`,
     faq_q7: `どのWindowsバージョンに対応していますか?`,
     faq_a7: `Windows 10および11、64ビット(x64)に対応しています。`,
+    faq_q8: `オンラインプレイ中にパフォーマンス(FPS)オーバーレイを使用できますか?`,
+    faq_a8: `注意が必要です。パフォーマンスオーバーレイは管理者権限で実行され、ゲームの上にウィンドウを描画します。一部の厳格なアンチチートシステム(特にValorantのVanguardやEasyAntiCheat/BattlEyeの厳格モードなど、カーネルレベルで動作するもの)はこれを検出し、不審なものとしてフラグを立てる可能性があり、アカウント停止のリスクがあります。アンチチートが有効なオンライン対戦ゲームでの使用はおすすめしません — アンチチートのないゲームやシングルプレイヤーでは問題ありません。`,
     footer_text: `© 2026 XC24 — All Rights Reserved`,
   },
 };
